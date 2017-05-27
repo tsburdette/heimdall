@@ -22,7 +22,7 @@ Installation
 
 To install dependencies, run: ::
     
-    pip install -r dependencies.txt
+    pip install -r requirements.txt
 
 Basic Use
 ---------
