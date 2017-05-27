@@ -1,22 +1,27 @@
 from flask import Flask
 from flask_restful import Resource, Api
-import schedule
+from crontab import CronTab
 import json
 import diagnostics
 
-diags = diagnostics.Diagnostics()
+cron = CronTab(user='root')
+job = cron.new(command='python ./diagnostics.py')
+job.minute.every(1)
 
-diags.record_all_metrics()
+cron.write
+
+#diags = diagnostics.Diagnostics()
+#diags.record_all_metrics()
 
 app = Flask(__name__)
 api = Api(app)
 
-class Metrics(Resource):
+class CurrentMetrics(Resource):
     def get(self):
         with open('diags.json', 'r') as diags_json:
             return json.load(diags_json)
 
-api.add_resource(Metrics, '/Metrics')
+api.add_resource(CurrentMetrics, '/CurrentMetrics')
 
 if __name__ == '__main__':
     app.run(debug=True)
