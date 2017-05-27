@@ -1,11 +1,12 @@
 from flask import Flask
 from flask_restful import Resource, Api
+import schedule
 import json
 import diagnostics
 
 diags = diagnostics.Diagnostics()
-diags.record_cpu_percent()
-diags.store_diags()
+
+diags.record_all_metrics()
 
 app = Flask(__name__)
 api = Api(app)
