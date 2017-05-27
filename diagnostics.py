@@ -75,5 +75,4 @@ class Diagnostics:
 
 """ Maybe client cronjob should run this without creating a new instance?"""
 if __name__ == '__main__':
-    diags.Diagnostics()
-    diags.record_all_metrics()
+    Diagnostics().record_all_metrics()

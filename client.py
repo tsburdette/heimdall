@@ -27,6 +27,8 @@ class CurrentMetrics(Resource):
                 return json.load(diags_json)
         except IOError:
             return json.dumps({'Error': 'No data recorded yet.'})
+	def post(self):
+		os.system("python ./diagnostics.py")
 
 api.add_resource(CurrentMetrics, '/CurrentMetrics')
 
