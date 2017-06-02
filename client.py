@@ -1,36 +1,33 @@
 from flask import Flask
 from flask_restful import Resource, Api
-from crontab import CronTab
-import getpass
+from scheduler import Scheduler
 import json
-import diagnostics
+import os
 
-""" Run cron to record new diagnostics periodically.
-TODO: Add arguments for user and time interval.
-"""
-cron = CronTab(user=getpass.getuser())
-job = cron.new(command='python ./diagnostics.py')
-job.minute.every(1)
+if not os.path.exists('logs'):
+    os.makedirs('logs')
 
-cron.write()
-
-#diags = diagnostics.Diagnostics()
-#diags.record_all_metrics()
+scheduler = Scheduler()
 
 app = Flask(__name__)
 api = Api(app)
 
-class CurrentMetrics(Resource):
+class CurrentHourlyMetrics(Resource):
     def get(self):
+        file_name = scheduler.log.file_name
+        print "Current log is located at " + str(file_name)
         try:
-            with open('diags.json', 'r') as diags_json:
-                return json.load(diags_json)
+            with open('logs/' + file_name, 'r') as latest_log:
+                return json.load(latest_log)
         except IOError:
             return json.dumps({'Error': 'No data recorded yet.'})
-	def post(self):
-		os.system("python ./diagnostics.py")
 
-api.add_resource(CurrentMetrics, '/CurrentMetrics')
+class DeleteLogs(Resource):
+    def post(self):
+        os.system("rm -rf logs/*")
+
+api.add_resource(CurrentHourlyMetrics, '/CurrentHourlyMetrics')
+api.add_resource(DeleteLogs, '/DeleteLogs')
 
 if __name__ == '__main__':
     app.run(debug=True)
