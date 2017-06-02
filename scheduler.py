@@ -2,7 +2,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from metrics_log import MetricsLog
 
 class Scheduler:
-
+    """ A scheduled procedure for recording metrics to a log."""
     def __init__(self):
         self.create_new_log()
         self.scheduler = BackgroundScheduler()

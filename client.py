@@ -22,11 +22,16 @@ class CurrentHourlyMetrics(Resource):
         except IOError:
             return json.dumps({'Error': 'No data recorded yet.'})
 
+class CurrentMetrics(Resource):
+    def get(self):    
+        return scheduler.log.newest_entry.metrics
+
 class DeleteLogs(Resource):
     def post(self):
         os.system("rm -rf logs/*")
 
 api.add_resource(CurrentHourlyMetrics, '/CurrentHourlyMetrics')
+api.add_resource(CurrentMetrics, '/CurrentMetrics')
 api.add_resource(DeleteLogs, '/DeleteLogs')
 
 if __name__ == '__main__':

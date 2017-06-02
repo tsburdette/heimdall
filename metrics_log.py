@@ -3,7 +3,7 @@ import json
 from metrics_entry import MetricsEntry
 
 class MetricsLog:
-
+    """ A group of metrics that can be recorded regularly. """
     def __init__(self):
         self.entries = {}
         print "* Creating log file."
@@ -13,9 +13,9 @@ class MetricsLog:
 
     def add_new_entry(self):
         """ MetricsEntry should be serializable in order to facilitate encapsulation. """
-        new_entry = MetricsEntry()
-        print "* New entry created at " + str(new_entry.get_timestamp())
-        self.entries[new_entry.get_timestamp()] = new_entry.metrics
+        self.newest_entry = MetricsEntry()
+        print "* New entry created at " + str(self.newest_entry.get_timestamp())
+        self.entries[self.newest_entry.get_timestamp()] = self.newest_entry.metrics
         self.write_log()
 
     def write_log(self):
