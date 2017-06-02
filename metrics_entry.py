@@ -44,3 +44,6 @@ class MetricsEntry:
                                                  'free': part_usage.free,
                                                  'percent': part_usage.percent}
         return total_usage
+
+    def get_timestamp(self):
+        return self.metrics['timestamp']
